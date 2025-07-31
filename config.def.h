@@ -2,6 +2,7 @@
 
 /* appearance */
 #include <X11/X.h>
+#include <X11/Xutil.h>
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int gappih    = 20;       /* horiz inner gap between windows */
@@ -11,6 +12,11 @@ static const unsigned int gappov    = 30;       /* vert outer gap between window
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
+static const int showtitle          = 1;        /* 0 means no title */
+static const int showtags           = 1;        /* 0 means no tags */
+static const int showlayout         = 1;        /* 0 means no layout indicator */
+static const int showstatus         = 1;        /* 0 means no status bar */
+static const int showfloating       = 1;        /* 0 means no floating indicator */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "UbuntuMono Nerd Font:size=12" };
 static const char dmenufont[]       = "UbuntuMono Nerd Font:size=12";
@@ -124,6 +130,11 @@ static const Key keys[] = {
 	{ MODKEY|Mod1Mask|ShiftMask,    XK_9,      incrovgaps,     {.i = -1 } },
 	{ MODKEY|Mod1Mask,              XK_0,      togglegaps,     {0} },
 	{ MODKEY|Mod1Mask|ShiftMask,    XK_0,      defaultgaps,    {0} },
+	{ MODKEY,	                XK_y,      togglebartitle, {0} },
+	{ MODKEY,                       XK_p,      togglebarstatus,{0} },
+	{ MODKEY|ShiftMask,             XK_y,      togglebartags,  {0} },
+	{ MODKEY|ShiftMask,		XK_p,      togglebarlt,    {0} },
+	{ MODKEY|ShiftMask,		XK_t,      togglebarfloat, {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_c,      killclient,     {0} },
         { MODKEY|ShiftMask,             XK_c,      bulkill,        {.ui = 1} },  // kill unselect
