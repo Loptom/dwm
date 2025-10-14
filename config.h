@@ -114,14 +114,17 @@ static const char *voldowncmd[] = { "sh", "-c", "amixer -q set Master 5%- unmute
 static const char *brupcmd[] = { "sh", "-c", "light -A 10 && pkill -RTMIN+12 dwmblocks", NULL };
 static const char *brdowncmd[] = { "sh", "-c", "light -U 10 && pkill -RTMIN+12 dwmblocks", NULL };
 
+static const char *scrshotmon[] = {"sh", "-c", "sleep 1s; scrot -m ~/Pictures/screenshots/%Y-%m-%d_$wx$h_ss.png -e 'xclip -selection clipboard -target image/png < $f'",  NULL };
+static const char *scrshotsel[] = {"sh", "-c", "sleep 1s; scrot -s ~/Pictures/screenshots/%Y-%m-%d_$wx$h_ss.png -e 'xclip -selection clipboard -target image/png < $f'",  NULL };
+
 #include "bulkill.c"
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_r,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
-	{ MODKEY,                       XK_k,      focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_j,      focusstack,     {.i = -1 } },
+	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
+	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
@@ -178,8 +181,10 @@ static const Key keys[] = {
     { 0,                            XF86XK_AudioRaiseVolume,  spawn, {.v = volupcmd } },
     { 0,                            XF86XK_AudioLowerVolume,  spawn, {.v = voldowncmd } },
     { 0,                            XF86XK_AudioMute,         spawn, {.v = mutecmd } },
-    { 0,                            XF86XK_MonBrightnessUp,   spawn, {.v = brupcmd} },
+    { 0,                            XF86XK_MonBrightnessUp,   spawn,{.v = brupcmd} },
     { 0,                            XF86XK_MonBrightnessDown, spawn, {.v = brdowncmd} },
+	{ MODKEY,                       XK_s,                     spawn, {.v = scrshotmon } },
+	{ MODKEY|ShiftMask,             XK_s,                     spawn, {.v = scrshotsel } },
 	{ MODKEY|ShiftMask,             XK_x,      quit,           {0} },
 	{ MODKEY|ControlMask|ShiftMask, XK_x,      quit,           {1} }, 
 };
