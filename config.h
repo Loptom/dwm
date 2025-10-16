@@ -114,8 +114,8 @@ static const char *voldowncmd[] = { "sh", "-c", "amixer -q set Master 5%- unmute
 static const char *brupcmd[] = { "sh", "-c", "light -A 10 && pkill -RTMIN+12 dwmblocks", NULL };
 static const char *brdowncmd[] = { "sh", "-c", "light -U 10 && pkill -RTMIN+12 dwmblocks", NULL };
 
-static const char *scrshotmon[] = {"sh", "-c", "sleep 1s; scrot -m ~/Pictures/screenshots/%Y-%m-%d_$wx$h_ss.png -e 'xclip -selection clipboard -target image/png < $f'",  NULL };
-static const char *scrshotsel[] = {"sh", "-c", "sleep 1s; scrot -s ~/Pictures/screenshots/%Y-%m-%d_$wx$h_ss.png -e 'xclip -selection clipboard -target image/png < $f'",  NULL };
+static const char *scrshotmon[] = {"sh", "-c", "sleep 1s; maim > ~/Pictures/screenshots/$(date +'%d-%m-%Y_%s').png | xclip -selection clipboard -target image/png",  NULL };
+static const char *scrshotsel[] = {"sh", "-c", "sleep 1s; maim -s > ~/Pictures/screenshots/$(date +'%d-%m-%Y_%s').png | xclip -selection clipboard -target image/png",  NULL };
 
 #include "bulkill.c"
 static const Key keys[] = {
