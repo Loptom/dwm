@@ -21,14 +21,14 @@ static const int showfloating       = 1;        /* 0 means no floating indicator
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "UbuntuMono Nerd Font:size=12" };
 static const char dmenufont[]       = "UbuntuMono Nerd Font:size=12";
+static unsigned int baralpha        = 0xd0;
+static unsigned int borderalpha     = OPAQUE;
 static char normbgcolor[]           = "#222222";
 static char normbordercolor[]       = "#444444";
 static char normfgcolor[]           = "#bbbbbb";
 static char selfgcolor[]            = "#eeeeee";
 static char selbordercolor[]        = "#005577";
 static char selbgcolor[]            = "#005577";
-static const unsigned int baralpha = 0x80;
-static const unsigned int borderalpha = OPAQUE;
 static char *colors[][3] = {
        /*               fg           bg           border   */
        [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
@@ -36,13 +36,8 @@ static char *colors[][3] = {
        [SchemeStatus]  = { normfgcolor, normbgcolor,  "#000000"  }, // Statusbar right {text,background,not used but cannot be empty}
        [SchemeTagsSel]  = { selfgcolor, selbgcolor,  "#000000"  }, // Tagbar left selected {text,background,not used but cannot be empty}
        [SchemeTagsNorm]  = { normfgcolor, normbgcolor,  "#000000"  }, // Tagbar left unselected {text,background,not used but cannot be empty}
-       [SchemeInfoSel]  = { selfgcolor, selbgcolor,  "#000000"  }, // infobar middle  selected {text,background,not used but cannot be empty}
+       [SchemeInfoSel]  = { normfgcolor, normbgcolor,  "#000000"  }, // infobar middle  selected {text,background,not used but cannot be empty}
        [SchemeInfoNorm]  = { normfgcolor, normbgcolor,  "#000000"  }, // infobar middle  unselected {text,background,not used but cannot be empty}
-};
-static const unsigned int alphas[][3]      = {
-       /*               fg      bg        border*/
-       [SchemeNorm] = { OPAQUE, baralpha, borderalpha },
-       [SchemeSel]  = { OPAQUE, baralpha, borderalpha },
 };
 
 /* tagging */
@@ -116,8 +111,8 @@ static const char *voldowncmd[] = { "sh", "-c", "amixer -q set Master 5%- unmute
 static const char *brupcmd[] = { "sh", "-c", "light -A 10 && pkill -RTMIN+12 dwmblocks", NULL };
 static const char *brdowncmd[] = { "sh", "-c", "light -U 10 && pkill -RTMIN+12 dwmblocks", NULL };
 
-static const char *scrshotmon[] = {"sh", "-c", "sleep 1s; maim > ~/Pictures/screenshots/$(date +'%d-%m-%Y_%s').png | xclip -selection clipboard -target image/png",  NULL };
-static const char *scrshotsel[] = {"sh", "-c", "sleep 1s; maim -s > ~/Pictures/screenshots/$(date +'%d-%m-%Y_%s').png | xclip -selection clipboard -target image/png",  NULL };
+static const char *scrshotmon[] = {"sh", "-c", "maim | tee ~/Pictures/screenshots/$(date +'%d-%m-%Y_%s').png | xclip -selection clipboard -target image/png",  NULL };
+static const char *scrshotsel[] = {"sh", "-c", "sleep 0.5s; maim -s | tee ~/Pictures/screenshots/$(date +'%d-%m-%Y_%s').png | xclip -selection clipboard -target image/png",  NULL };
 
 #include "bulkill.c"
 static const Key keys[] = {

@@ -279,7 +279,7 @@ static Monitor *wintomon(Window w);
 static int xerror(Display *dpy, XErrorEvent *ee);
 static int xerrordummy(Display *dpy, XErrorEvent *ee);
 static int xerrorstart(Display *dpy, XErrorEvent *ee);
-static void xinitvisual();
+static void xinitvisual(void);
 static void xrdb(const Arg *arg);
 static void zoom(const Arg *arg);
 
@@ -1270,12 +1270,12 @@ loadxrdb()
       xrdb = XrmGetStringDatabase(resm);
 
       if (xrdb != NULL) {
-        XRDB_LOAD_COLOR("dwm.normbordercolor", normbordercolor);
-        XRDB_LOAD_COLOR("dwm.normbgcolor", normbgcolor);
-        XRDB_LOAD_COLOR("dwm.normfgcolor", normfgcolor);
-        XRDB_LOAD_COLOR("dwm.selbordercolor", selbordercolor);
-        XRDB_LOAD_COLOR("dwm.selbgcolor", selbgcolor);
-        XRDB_LOAD_COLOR("dwm.selfgcolor", selfgcolor);
+        XRDB_LOAD_COLOR("dwm.color0", normbordercolor);
+        XRDB_LOAD_COLOR("dwm.color0", normbgcolor);
+        XRDB_LOAD_COLOR("dwm.color4", normfgcolor);
+        XRDB_LOAD_COLOR("dwm.color8", selbordercolor);
+        XRDB_LOAD_COLOR("dwm.color4", selbgcolor);
+        XRDB_LOAD_COLOR("dwm.color0", selfgcolor);
       }
     }
   }
@@ -1849,8 +1849,9 @@ setup(void)
 	cursor[CurMove] = drw_cur_create(drw, XC_fleur);
 	/* init appearance */
 	scheme = ecalloc(LENGTH(colors), sizeof(Clr *));
+	unsigned int alphas[] = {borderalpha, baralpha, OPAQUE};
 	for (i = 0; i < LENGTH(colors); i++)
-		scheme[i] = drw_scm_create(drw, colors[i], alphas[i], 3);
+		scheme[i] = drw_scm_create(drw, colors[i], alphas, 3);
 	/* init bars */
 	updatebars();
 	updatestatus();
@@ -2659,23 +2660,24 @@ void
 xrdb(const Arg *arg)
 {
   loadxrdb();
+  unsigned int alphas[] = {borderalpha, baralpha, OPAQUE};
   int i;
   for (i = 0; i < LENGTH(colors); i++)
-    scheme[i] = drw_scm_create(drw, colors[i], alphas[i], 3);
+    scheme[i] = drw_scm_create(drw, colors[i], alphas, 3);
   focus(NULL);
   arrange(NULL);
 }
 
 void
-xinitvisual()
+xinitvisual(void)
 {
-    XVisualInfo *infos;
+	XVisualInfo *infos;
 	XRenderPictFormat *fmt;
 	int nitems;
 	int i;
 
 	XVisualInfo tpl = {
-        .screen = screen,
+		.screen = screen,
 		.depth = 32,
 		.class = TrueColor
 	};
@@ -2683,25 +2685,26 @@ xinitvisual()
 
 	infos = XGetVisualInfo(dpy, masks, &tpl, &nitems);
 	visual = NULL;
-	for(i = 0; i < nitems; i ++) {
-        fmt = XRenderFindVisualFormat(dpy, infos[i].visual);
+	for(i = 0; i < nitems; i++) {
+		fmt = XRenderFindVisualFormat(dpy, infos[i].visual);
 		if (fmt->type == PictTypeDirect && fmt->direct.alphaMask) {
-            visual = infos[i].visual;
+			visual = infos[i].visual;
 			depth = infos[i].depth;
 			cmap = XCreateColormap(dpy, root, visual, AllocNone);
 			useargb = 1;
 			break;
-        }
-    }
+		}
+	}
 
 	XFree(infos);
 
-	if (! visual) {
-        visual = DefaultVisual(dpy, screen);
+	if (!visual) {
+		visual = DefaultVisual(dpy, screen);
 		depth = DefaultDepth(dpy, screen);
 		cmap = DefaultColormap(dpy, screen);
-    }
+	}
 }
+
 
 void
 zoom(const Arg *arg)
